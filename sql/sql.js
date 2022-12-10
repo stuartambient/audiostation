@@ -125,6 +125,15 @@ const allFilesByScroll = offsetNum => {
   return stmt.all();
 };
 
+const allFilesBySearchTerm = (offsetNum, text) => {
+  const term = `%${text}%`;
+  console.log(term);
+  const stmt = db.prepare(
+    `SELECT * FROM files WHERE audioFile LIKE ? LIMIT 50 OFFSET ${offsetNum}`
+  );
+  return stmt.all(term);
+};
+
 const requestedFile = trackId => {
   const reqTrack = db.prepare(`Select * from files where afid = ? `);
   return reqTrack.get(trackId);
@@ -138,5 +147,6 @@ export {
   getAlbums,
   getFiles,
   allFilesByScroll,
+  allFilesBySearchTerm,
   requestedFile,
 };

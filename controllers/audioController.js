@@ -1,16 +1,21 @@
 import fs from "node:fs";
-import { allFilesByScroll, requestedFile } from "../sql/sql.js";
+import {
+  allFilesByScroll,
+  allFilesBySearchTerm,
+  requestedFile,
+} from "../sql/sql.js";
 
 const audioLibrary = async (req, res) => {
-  let query;
-  if (req.query.text) {
-    query = { $text: { $search: req.query.text } };
-  } else {
-    query = {};
-  }
-
+  if (!req.query.page) return;
   const offsetNum = Number(req.query.page * 50);
-  const results = allFilesByScroll(offsetNum);
+
+  let results;
+  if (req.query.text !== "") {
+    results = allFilesBySearchTerm(offsetNum, req.query.text);
+  } else {
+    results = allFilesByScroll(offsetNum);
+  }
+  /* console.log(results); */
   res.status(200).send({ results });
 };
 

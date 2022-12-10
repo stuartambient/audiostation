@@ -19,6 +19,11 @@ app.get("/tracks/:trackId", streamAudio);
 app.get("/update-albums", initAlbums);
 app.get("/update-files", initFiles);
 
+process.on("uncaughtException", err => {
+  console.error(err.message);
+  process.exit(1);
+});
+
 process.on("exit", () => {
   console.log("exiting.....");
   db.close();
