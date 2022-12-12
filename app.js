@@ -3,7 +3,11 @@ import { Router } from "express";
 import fs from "node:fs";
 import cors from "cors";
 import { parseFile } from "music-metadata";
-import { streamAudio, audioLibrary } from "./controllers/audioController.js";
+import {
+  streamAudio,
+  allFiles,
+  allAlbums,
+} from "./controllers/audioController.js";
 import initAlbums from "./controllers/albumsController.js";
 import initFiles from "./controllers/filesController.js";
 
@@ -14,7 +18,8 @@ const port = 3008;
 app.disable("etag");
 app.use(cors());
 
-app.get("/alltracks", audioLibrary);
+app.get("/allfiles", allFiles);
+app.get("/allalbums", allAlbums);
 app.get("/tracks/:trackId", streamAudio);
 app.get("/update-albums", initAlbums);
 app.get("/update-files", initFiles);

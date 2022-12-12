@@ -7,27 +7,29 @@ import {
   requestedFile,
 } from "../sql/sql.js";
 
-const audioLibrary = async (req, res) => {
+const allFiles = async (req, res) => {
   if (!req.query.page) return;
-  console.log(req.query.type);
   const offsetNum = Number(req.query.page * 50);
 
   let results;
-  if (req.query.type === "files") {
-    if (req.query.text !== "") {
-      results = allFilesBySearchTerm(offsetNum, req.query.text);
-    } else {
-      results = allFilesByScroll(offsetNum);
-    }
-  } else if (req.query.type === "albums") {
-    if (req.query.text !== "") {
-      results = allAlbumsBySearchTerm(offsetNum, req.query.text);
-    } else {
-      results = allAlbumsByScroll(offsetNum);
-    }
+  if (req.query.text !== "") {
+    results = allFilesBySearchTerm(offsetNum, req.query.text);
+  } else {
+    results = allFilesByScroll(offsetNum);
   }
+  res.status(200).send({ results });
+};
 
-  /* console.log(results); */
+const allAlbums = async (req, res) => {
+  if (!req.query.page) return;
+  const offsetNum = Number(req.query.page * 50);
+
+  let results;
+  if (req.query.text !== "") {
+    results = allAlbumsBySearchTerm(offsetNum, req.query.text);
+  } else {
+    results = allAlbumsByScroll(offsetNum);
+  }
   res.status(200).send({ results });
 };
 
@@ -62,4 +64,4 @@ const streamAudio = async (req, res) => {
   stream.pipe(res);
 };
 
-export { streamAudio, audioLibrary };
+export { streamAudio, allFiles, allAlbums };
