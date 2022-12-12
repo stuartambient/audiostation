@@ -134,6 +134,20 @@ const allFilesBySearchTerm = (offsetNum, text) => {
   return stmt.all(term);
 };
 
+const allAlbumsByScroll = offsetNum => {
+  const stmt = db.prepare(`SELECT * FROM albums LIMIT 50 OFFSET ${offsetNum}`);
+  return stmt.all();
+};
+
+const allAlbumsBySearchTerm = (offsetNum, text) => {
+  const term = `%${text}%`;
+  console.log(term);
+  const stmt = db.prepare(
+    `SELECT * FROM albums WHERE fullpath LIKE ? LIMIT 50 OFFSET ${offsetNum}`
+  );
+  return stmt.all(term);
+};
+
 const requestedFile = trackId => {
   const reqTrack = db.prepare(`Select * from files where afid = ? `);
   return reqTrack.get(trackId);
@@ -148,5 +162,7 @@ export {
   getFiles,
   allFilesByScroll,
   allFilesBySearchTerm,
+  allAlbumsByScroll,
+  allAlbumsBySearchTerm,
   requestedFile,
 };
