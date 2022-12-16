@@ -5,6 +5,7 @@ import {
   allAlbumsByScroll,
   allAlbumsBySearchTerm,
   requestedFile,
+  filesByAlbum,
 } from "../sql/sql.js";
 
 const allFiles = async (req, res) => {
@@ -31,6 +32,13 @@ const allAlbums = async (req, res) => {
     results = allAlbumsByScroll(offsetNum);
   }
   res.status(200).send({ results });
+};
+
+const albumTracks = async (req, res) => {
+  if (!req.query.pattern) return res.status(200).send("track pattern");
+
+  const results = filesByAlbum(req.query.pattern);
+  res.status(200).send(results);
 };
 
 const streamAudio = async (req, res) => {
@@ -64,4 +72,4 @@ const streamAudio = async (req, res) => {
   stream.pipe(res);
 };
 
-export { streamAudio, allFiles, allAlbums };
+export { streamAudio, allFiles, allAlbums, albumTracks };

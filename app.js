@@ -7,6 +7,7 @@ import {
   streamAudio,
   allFiles,
   allAlbums,
+  albumTracks,
 } from "./controllers/audioController.js";
 import initAlbums from "./controllers/albumsController.js";
 import initFiles from "./controllers/filesController.js";
@@ -20,6 +21,7 @@ app.use(cors());
 
 app.get("/allfiles", allFiles);
 app.get("/allalbums", allAlbums);
+app.get("/albumtracks", albumTracks);
 app.get("/tracks/:trackId", streamAudio);
 app.get("/update-albums", initAlbums);
 app.get("/update-files", initFiles);

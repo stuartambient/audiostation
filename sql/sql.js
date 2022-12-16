@@ -153,6 +153,22 @@ const requestedFile = trackId => {
   return reqTrack.get(trackId);
 };
 
+const filesByAlbum = albumPath => {
+  const album = db.prepare("SELECT fullpath FROM albums WHERE fullpath = ?");
+  const getAlbum = album.get(albumPath);
+  /* const stmt = db.prepare("SELECT audioFile FROM files WHERE "); */
+  const albumpath = getAlbum.fullpath;
+  const files = db.prepare(
+    "SELECT afid,audioFile FROM files WHERE audioFile LIKE ?"
+  );
+  const assocFiles = files.all(`${albumpath}%`);
+  const albumFiles = [];
+  assocFiles.forEach(a => {
+    albumFiles.push(a);
+  });
+  return albumFiles;
+};
+
 export {
   insertFiles,
   insertAlbums,
@@ -165,4 +181,5 @@ export {
   allAlbumsByScroll,
   allAlbumsBySearchTerm,
   requestedFile,
+  filesByAlbum,
 };
