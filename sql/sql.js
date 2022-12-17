@@ -158,9 +158,7 @@ const filesByAlbum = albumPath => {
   const getAlbum = album.get(albumPath);
   /* const stmt = db.prepare("SELECT audioFile FROM files WHERE "); */
   const albumpath = getAlbum.fullpath;
-  const files = db.prepare(
-    "SELECT afid,audioFile FROM files WHERE audioFile LIKE ?"
-  );
+  const files = db.prepare("SELECT * FROM files WHERE audioFile LIKE ?");
   const assocFiles = files.all(`${albumpath}%`);
   const albumFiles = [];
   assocFiles.forEach(a => {
