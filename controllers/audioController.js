@@ -10,6 +10,7 @@ import {
 
 const allFiles = async (req, res) => {
   if (!req.query.page) return;
+  console.log("hit allfiles");
   const offsetNum = Number(req.query.page * 50);
 
   let results;

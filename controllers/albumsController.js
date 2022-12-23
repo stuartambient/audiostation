@@ -1,10 +1,8 @@
 import fs from "node:fs";
-import { EventEmitter } from "node:events";
 import { v4 as uuidv4 } from "uuid";
 import { roots } from "../constant/constants.js";
 import { insertAlbums, deleteAlbums, getAlbums } from "../sql/sql.js";
 const [...newroots] = roots;
-const emitter = new EventEmitter();
 
 const parseNewEntries = (newEntries, insCb) => {
   const albumsArr = [];

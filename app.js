@@ -11,6 +11,7 @@ import {
 } from "./controllers/audioController.js";
 import initAlbums from "./controllers/albumsController.js";
 import initFiles from "./controllers/filesController.js";
+import test from "./controllers/testController.js";
 
 /* console.log(db); */
 const app = express();
@@ -25,6 +26,7 @@ app.get("/albumtracks", albumTracks);
 app.get("/tracks/:trackId", streamAudio);
 app.get("/update-albums", initAlbums);
 app.get("/update-files", initFiles);
+app.get("/test", test);
 
 process.on("uncaughtException", err => {
   console.error(err.message);
