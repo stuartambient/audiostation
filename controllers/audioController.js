@@ -19,6 +19,7 @@ const allFiles = async (req, res) => {
   } else {
     results = allFilesByScroll(offsetNum);
   }
+  console.log(results);
   res.status(200).send({ results });
 };
 
