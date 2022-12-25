@@ -48,22 +48,19 @@ const updateRoot = () => {
     console.log("backup failed:", err);
   }); */
 
-const insertFiles = (files, emitter) => {
+const insertFiles = files => {
   const insert = db.prepare(
     "INSERT INTO files VALUES (@afid, null, @audioFile, @modified, @extension, @year, @title, @artist, @album, @genre, @picture, @lossless, @bitrate, @sampleRate, 0)"
   );
 
   const insertMany = db.transaction(files => {
-    console.log(this);
     for (const f of files) insert.run(f);
   });
 
   const info = insertMany(files);
-  emitter.emit("insert-files-completed", files);
-  /* db.close(); */
 };
 
-const deleteFiles = (files, emitter) => {
+const deleteFiles = files => {
   const deleteFile = db.prepare("DELETE FROM files WHERE audioFile = ?");
 
   const deleteMany = db.transaction(files => {
@@ -72,11 +69,9 @@ const deleteFiles = (files, emitter) => {
   });
 
   const info = deleteMany(files);
-
-  emitter.emit("delete-files-completed", files);
 };
 
-const insertAlbums = (data, cb) => {
+const insertAlbums = data => {
   const insert = db.prepare(
     "INSERT INTO albums(_id, rootloc, foldername, fullpath) VALUES (@_id, @root, @name, @fullpath)"
   );
@@ -86,17 +81,14 @@ const insertAlbums = (data, cb) => {
   });
 
   insertMany(data);
-  cb(data);
 };
 
-const deleteAlbums = async (data, cb) => {
+const deleteAlbums = async data => {
   const deleteA = db.prepare("DELETE FROM albums WHERE fullpath = ?");
   const deleteMany = db.transaction(data => {
     for (const d of data) deleteA.run(d);
   });
   deleteMany(data);
-
-  cb(data);
 };
 
 const getAlbums = () => {
